@@ -3,16 +3,22 @@
 <HEAD>
 <TITLE>Enscript Output</TITLE>
 </HEAD>
-<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#1F00FF" ALINK="#FF0000" VLINK="#9900DD">
+<!-- BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#1F00FF" ALINK="#FF0000" VLINK="#9900DD" -->
 <A NAME="top">
 <A NAME="file1">
 <H1>(stdin)</H1>
-
+<style type="text/css">
+.output:target {
+	background-color: #DDDDDD;
+}
+</style>
 <PRE>
 GHCi, version 8.6.5: http://www.haskell.org/ghc/  :? for help
-<span id='cmd00000'></span>
-<span id='cmd00001'></span>
-<span id='cmd00002'></span>
+<div id='cmd00000' class='output'>
+</div>
+<div id='cmd00001' class='output'>
+</div>
+<div id='cmd00002' class='output'>
 (&lt;$!&gt;) <B><FONT COLOR="#228B22">:: Monad m =&gt; (a -&gt; b) -&gt; m a -&gt; m b
 </FONT></B>(&lt;=&lt;) <B><FONT COLOR="#228B22">:: Monad m =&gt; (b -&gt; m c) -&gt; (a -&gt; m b) -&gt; a -&gt; m c
 </FONT></B>(&gt;=&gt;) <B><FONT COLOR="#228B22">:: Monad m =&gt; (a -&gt; m b) -&gt; (b -&gt; m c) -&gt; a -&gt; m c
@@ -73,12 +79,15 @@ mapM_ <B><FONT COLOR="#228B22">:: (Foldable t, Monad m) =&gt; (a -&gt; m b) -&gt
 </FONT></B>sequence_ <B><FONT COLOR="#228B22">:: (Foldable t, Monad m) =&gt; t (m a) -&gt; m ()
 </FONT></B>void <B><FONT COLOR="#228B22">:: Functor f =&gt; f a -&gt; f ()
 </FONT></B>when <B><FONT COLOR="#228B22">:: Applicative f =&gt; Bool -&gt; f () -&gt; f ()
-<span id='cmd00003'></span>
+</div>
+<div id='cmd00003' class='output'>
 </FONT></B><B><FONT COLOR="#BC8F8F">&quot;HelloWorld&quot;</FONT></B>
 it <B><FONT COLOR="#228B22">:: ()
-<span id='cmd00004'></span>
+</div>
+<div id='cmd00004' class='output'>
 </FONT></B>7
 it <B><FONT COLOR="#228B22">:: Num a =&gt; a
+</div>
 </FONT></B>Loaded GHCi configuration from hello.ghci
 Prelude Control.Monad&gt; Leaving GHCi.
 </PRE>
