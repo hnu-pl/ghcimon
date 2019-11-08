@@ -1,2 +1,2 @@
 # ghcimon
-Monitor change of ghci scripts and generate web-browser friendly output
+Monitor ghci-script changes to generate web-browser friendly output
