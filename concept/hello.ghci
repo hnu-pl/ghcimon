@@ -1,0 +1,14 @@
+:set +t
+
+:m + Control.Monad
+
+:browse Control.Monad
+
+:{
+print $
+   "Hello"
+   ++
+   "World"
+:}
+
+3 + 4
