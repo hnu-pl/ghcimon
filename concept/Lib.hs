@@ -42,10 +42,10 @@ outputStyle = unlines
   , "</style>"
   ]
 
-addInTags (l:ls)
+addOutTags (l:ls)
   | l=="<PRE>" = outputStyle : l : addOutTags ls
   -- | hasCMD l   = undefined
   | otherwise  = l : addOutTags ls
-addInTags []     = []
+addOutTags []     = []
 
 
