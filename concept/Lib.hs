@@ -37,7 +37,7 @@ tagOutputHTML :: String -> String
 tagOutputHTML = unlines . addOutTags . lines
 
 outputStyle = unlines
-  [ "<style type="text/css">"
+  [ "<style type='text/css'>"
   , ".output:target { background-color: #DDDDDD; }"
   , "</style>"
   ]
