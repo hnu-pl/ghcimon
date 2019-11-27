@@ -2,6 +2,7 @@
 module Lib where
 
 import Data.Char
+import Data.List
 import Text.Printf
 
 -- add echo CMD to .ghci
@@ -19,11 +20,17 @@ addcmds _ [] = [printf ":!echo '#CMD%05d'" (0::Int)] -- end with #CMD00000
 tagInputHTML :: String -> String
 tagInputHTML = unlines . addInTags . lines
 
-addInTags (l:ls)
-  | l=="<PRE>" = inputStyle : l : addInTags ls
-  -- | hasCMD l   = undefined
-  | otherwise  = l : addInTags ls
 addInTags []     = []
+addInTags (l:ls)
+  | l=="<PRE>"   = inputStyle : l : addInTags ls
+  | hasCMD l     =  case checkCMD l of
+                       0   ->   "</a>":[]
+                       1   ->   concat ["<a href = 'test-out-raw.html" , (dropWhile (/= '#' )  $ head $ lines l) , " class='input' target='out'>"] :  addInTags ls
+                       _   ->   concat ["</a><a href = 'test-out-raw.html", (dropWhile (/= '#' )  $ head $ lines l) , " class='input' target='out'>"]: addInTags ls
+  | otherwise  = l : addInTags ls
+
+
+
 
 inputStyle = unlines
   [ "<style type='text/css'>"
@@ -42,10 +49,23 @@ outputStyle = unlines
   , "</style>"
   ]
 
+addOutTags []     = []
 addOutTags (l:ls)
   | l=="<PRE>" = outputStyle : l : addOutTags ls
-  -- | hasCMD l   = undefined
+  | hasCMD l     =  case checkCMD l of
+                      0 -> "</div>":[]
+                      1 ->  concat ["<div id='CMD"       , (printf "%05d" (1 :: Int)) ,"' class='output'>"] : addOutTags ls
+                      n ->  concat ["</div><div id='CMD" , (printf "%05d" (n ::Int))  ,"' class='output'>"] : addOutTags ls
   | otherwise  = l : addOutTags ls
-addOutTags []     = []
 
 
+
+hasCMD :: String -> Bool
+hasCMD l = "#CMD" `isInfixOf` l 
+
+checkCMD l = read $ filter isNumber (getCMD "#CMD" l) :: Int 
+
+getCMD :: String -> String -> String
+getCMD [] l =  l
+getCMD s  [] =  [] 
+getCMD s@(x:xs)  (y:ys) = if x==y then x:(getCMD xs ys) else getCMD s ys
