@@ -1,4 +1,3 @@
-
 :set +t
 
 :m + Control.Monad
@@ -13,3 +12,19 @@ print $
 :}
 
 3 + 4
+
+"aaa<bbb>ccc"
+
+:m + Network.URI.Encode
+
+data GHCIMONRAW = GHCIMONRAW String deriving Show
+
+GHCIMONRAW (encode "<img alt='picsum' src='https://picsum.photos/200/300'>")
+
+
+
+
+9 + 7
+
+
+

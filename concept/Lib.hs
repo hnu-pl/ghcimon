@@ -4,10 +4,11 @@ module Lib where
 import Data.Char
 import Data.List
 import Text.Printf
+import Network.URI.Encode (encode, decode)
 
 -- add echo CMD to .ghci
 inputFilter :: String -> String
-inputFilter = unlines . addCMDs . lines
+inputFilter = unlines . addCMDs . ([]:) . lines
 
 addCMDs = addcmds 1
 
@@ -52,13 +53,17 @@ outputStyle = unlines
 addOutTags []     = []
 addOutTags (l:ls)
   | l=="<PRE>" = outputStyle : l : addOutTags ls
-  | hasCMD l     =  case checkCMD l of
-                      0 -> "</div>":[]
-                      1 ->  concat ["<div id='CMD"       , (printf "%05d" (1 :: Int)) ,"' class='output'>"] : addOutTags ls
-                      n ->  concat ["</div><div id='CMD" , (printf "%05d" (n ::Int))  ,"' class='output'>"] : addOutTags ls
+  | hasCMD l   =  case checkCMD l of
+                    0 -> "</div>":[]
+                    1 ->  concat ["<div id='CMD"       , (printf "%05d" (1 :: Int)) ,"' class='output'>"] : addOutTags ls
+                    n ->  concat ["</div><div id='CMD" , (printf "%05d" (n ::Int))  ,"' class='output'>"] : addOutTags ls
+  | hasRAW l   = decode (parseRAW l) : addOutTags ls
   | otherwise  = l : addOutTags ls
 
+hasRAW :: String -> Bool
+hasRAW l = "</FONT></B>GHCIMONRAW <B>" `isPrefixOf` l
 
+parseRAW l = "<img alt='picsum' src='https://picsum.photos/700/200'>" -- TODO
 
 hasCMD :: String -> Bool
 hasCMD l = "#CMD" `isInfixOf` l 
