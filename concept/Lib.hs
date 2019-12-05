@@ -69,7 +69,7 @@ addOutTags (l:ls)
                         (printf "%05d" (checkCMD l :: Int)) ,
                         "' class='output'><a href='test-in-raw.html",
                         "#", "CMD", (printf "%05d" (checkCMD l :: Int)),
-                        "' target='in'>"
+                        "' class='output' target='in'>"
                         ]
     
     
