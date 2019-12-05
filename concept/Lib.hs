@@ -29,7 +29,7 @@ addInTags (l:ls)
                        1   ->   atag :  addInTags ls
                        _   ->  concat ["</a>" , atag ] : addInTags ls
   | otherwise  = l : addInTags ls
-      where  atag = concat ["<a href = 'test-out-raw.html",(dropWhile (/= '#' )  $ head $ lines l) ,", id='",(tail (dropWhile (/= '#' )  $ head $ lines l)),"' class='input' target='out'>"]
+      where  atag = concat ["<a href = 'test-out-raw.html",(dropWhile (/= '#' )  $ head $ lines l) ,", id='",(tail (dropWhile (/= '#' )  $ head $ lines l))," class='input' target='out'>"]
 
 
 
@@ -61,10 +61,10 @@ addOutTags (l:ls)
                     1 ->  concat 
                         ["<a id='" ,
                         cmd ,
-                        "' class='output'>",
-                        "' href='test-in-raw.html",
+                        "' class='output'",
+                        " href='test-in-raw.html",
                         "#", cmd ,
-                        "' target='in'"
+                        "' target='in'>"
                         ] 
                         : addOutTags ls
                     n ->  concat 
