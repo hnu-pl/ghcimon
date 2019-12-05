@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<HTML>
+<HEAD>
+<TITLE>Enscript Output</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#1F00FF" ALINK="#FF0000" VLINK="#9900DD">
+<A NAME="top">
+<A NAME="file1">
+<H1>(stdin)</H1>
+
+<style type='text/css'>
+a.output { all: unset; }
+a:focus.output { background-color: yellow; }
+.output:target { background-color: #DDDDDD; }
+</style>
+
+<PRE>
+GHCi, version 8.0.2: http://www.haskell.org/ghc/  :? for help
+<a id='CMD00001' class='output'>' href='test-in-raw.html#CMD00001' target='in'
+</a><a id='CMD00002' class='output'>' href='test-in-raw.html#CMD00002' target='in'
+</a><a id='CMD00003' class='output'>' href='test-in-raw.html#CMD00003' target='in'
+</FONT></B>(&lt;$!&gt;) <B><FONT COLOR="#228B22">:: Monad m =&gt; (a -&gt; b) -&gt; m a -&gt; m b
+</FONT></B>(&lt;=&lt;) <B><FONT COLOR="#228B22">:: Monad m =&gt; (b -&gt; m c) -&gt; (a -&gt; m b) -&gt; a -&gt; m c
+</FONT></B>(&gt;=&gt;) <B><FONT COLOR="#228B22">:: Monad m =&gt; (a -&gt; m b) -&gt; (b -&gt; m c) -&gt; a -&gt; m c
+</FONT></B>filterM <B><FONT COLOR="#228B22">:: Applicative m =&gt; (a -&gt; m Bool) -&gt; [a] -&gt; m [a]
+</FONT></B>foldM <B><FONT COLOR="#228B22">::
+</FONT></B>  (Foldable t, Monad m) =&gt; (b -&gt; a -&gt; m b) -&gt; b -&gt; t a -&gt; m b
+foldM_ <B><FONT COLOR="#228B22">::
+</FONT></B>  (Foldable t, Monad m) =&gt; (b -&gt; a -&gt; m b) -&gt; b -&gt; t a -&gt; m ()
+forever <B><FONT COLOR="#228B22">:: Applicative f =&gt; f a -&gt; f b
+</FONT></B>guard <B><FONT COLOR="#228B22">:: GHC.Base.Alternative f =&gt; Bool -&gt; f ()
+</FONT></B>mapAndUnzipM <B><FONT COLOR="#228B22">::
+</FONT></B>  Applicative m =&gt; (a -&gt; m (b, c)) -&gt; [a] -&gt; m ([b], [c])
+mfilter <B><FONT COLOR="#228B22">:: MonadPlus m =&gt; (a -&gt; Bool) -&gt; m a -&gt; m a
+</FONT></B>replicateM <B><FONT COLOR="#228B22">:: Applicative m =&gt; Int -&gt; m a -&gt; m [a]
+</FONT></B>replicateM_ <B><FONT COLOR="#228B22">:: Applicative m =&gt; Int -&gt; m a -&gt; m ()
+</FONT></B>unless <B><FONT COLOR="#228B22">:: Applicative f =&gt; Bool -&gt; f () -&gt; f ()
+</FONT></B>zipWithM <B><FONT COLOR="#228B22">:: Applicative m =&gt; (a -&gt; b -&gt; m c) -&gt; [a] -&gt; [b] -&gt; m [c]
+</FONT></B>zipWithM_ <B><FONT COLOR="#228B22">:: Applicative m =&gt; (a -&gt; b -&gt; m c) -&gt; [a] -&gt; [b] -&gt; m ()
+</FONT></B>(=&lt;&lt;) <B><FONT COLOR="#228B22">:: Monad m =&gt; (a -&gt; m b) -&gt; m a -&gt; m b
+</FONT></B><B><FONT COLOR="#A020F0">class</FONT></B> Functor (f <B><FONT COLOR="#228B22">:: * -&gt; *) where
+</FONT></B>  fmap <B><FONT COLOR="#228B22">:: (a -&gt; b) -&gt; f a -&gt; f b
+</FONT></B>  (&lt;$) <B><FONT COLOR="#228B22">:: a -&gt; f b -&gt; f a
+</FONT></B>  <I><FONT COLOR="#B22222">{-# MINIMAL fmap #-}</FONT></I>
+<B><FONT COLOR="#A020F0">class</FONT></B> Applicative m =&gt; Monad (m <B><FONT COLOR="#228B22">:: * -&gt; *) where
+</FONT></B>  (&gt;&gt;=) <B><FONT COLOR="#228B22">:: m a -&gt; (a -&gt; m b) -&gt; m b
+</FONT></B>  (&gt;&gt;) <B><FONT COLOR="#228B22">:: m a -&gt; m b -&gt; m b
+</FONT></B>  return <B><FONT COLOR="#228B22">:: a -&gt; m a
+</FONT></B>  fail <B><FONT COLOR="#228B22">:: String -&gt; m a
+</FONT></B>  <I><FONT COLOR="#B22222">{-# MINIMAL (&gt;&gt;=) #-}</FONT></I>
+<B><FONT COLOR="#A020F0">class</FONT></B> (GHC.Base.Alternative m, Monad m) =&gt;
+      MonadPlus (m <B><FONT COLOR="#228B22">:: * -&gt; *) where
+</FONT></B>  mzero <B><FONT COLOR="#228B22">:: m a
+</FONT></B>  mplus <B><FONT COLOR="#228B22">:: m a -&gt; m a -&gt; m a
+</FONT></B>ap <B><FONT COLOR="#228B22">:: Monad m =&gt; m (a -&gt; b) -&gt; m a -&gt; m b
+</FONT></B>forM <B><FONT COLOR="#228B22">:: (Traversable t, Monad m) =&gt; t a -&gt; (a -&gt; m b) -&gt; m (t b)
+</FONT></B>forM_ <B><FONT COLOR="#228B22">:: (Foldable t, Monad m) =&gt; t a -&gt; (a -&gt; m b) -&gt; m ()
+</FONT></B>join <B><FONT COLOR="#228B22">:: Monad m =&gt; m (m a) -&gt; m a
+</FONT></B>liftM <B><FONT COLOR="#228B22">:: Monad m =&gt; (a1 -&gt; r) -&gt; m a1 -&gt; m r
+</FONT></B>liftM2 <B><FONT COLOR="#228B22">:: Monad m =&gt; (a1 -&gt; a2 -&gt; r) -&gt; m a1 -&gt; m a2 -&gt; m r
+</FONT></B>liftM3 <B><FONT COLOR="#228B22">::
+</FONT></B>  Monad m =&gt; (a1 -&gt; a2 -&gt; a3 -&gt; r) -&gt; m a1 -&gt; m a2 -&gt; m a3 -&gt; m r
+liftM4 <B><FONT COLOR="#228B22">::
+</FONT></B>  Monad m =&gt;
+  (a1 -&gt; a2 -&gt; a3 -&gt; a4 -&gt; r) -&gt; m a1 -&gt; m a2 -&gt; m a3 -&gt; m a4 -&gt; m r
+liftM5 <B><FONT COLOR="#228B22">::
+</FONT></B>  Monad m =&gt;
+  (a1 -&gt; a2 -&gt; a3 -&gt; a4 -&gt; a5 -&gt; r)
+  -&gt; m a1 -&gt; m a2 -&gt; m a3 -&gt; m a4 -&gt; m a5 -&gt; m r
+<B><FONT COLOR="#A020F0">class</FONT></B> (Functor t, Foldable t) =&gt; Traversable (t <B><FONT COLOR="#228B22">:: * -&gt; *) where
+</FONT></B>  ...
+  mapM <B><FONT COLOR="#228B22">:: Monad m =&gt; (a -&gt; m b) -&gt; t a -&gt; m (t b)
+</FONT></B>  ...
+mapM_ <B><FONT COLOR="#228B22">:: (Foldable t, Monad m) =&gt; (a -&gt; m b) -&gt; t a -&gt; m ()
+</FONT></B>msum <B><FONT COLOR="#228B22">:: (Foldable t, MonadPlus m) =&gt; t (m a) -&gt; m a
+</FONT></B><B><FONT COLOR="#A020F0">class</FONT></B> (Functor t, Foldable t) =&gt; Traversable (t <B><FONT COLOR="#228B22">:: * -&gt; *) where
+</FONT></B>  ...
+  sequence <B><FONT COLOR="#228B22">:: Monad m =&gt; t (m a) -&gt; m (t a)
+</FONT></B>sequence_ <B><FONT COLOR="#228B22">:: (Foldable t, Monad m) =&gt; t (m a) -&gt; m ()
+</FONT></B>void <B><FONT COLOR="#228B22">:: Functor f =&gt; f a -&gt; f ()
+</FONT></B>when <B><FONT COLOR="#228B22">:: Applicative f =&gt; Bool -&gt; f () -&gt; f ()
+</a><a id='CMD00004' class='output'>' href='test-in-raw.html#CMD00004' target='in'
+</FONT></B><B><FONT COLOR="#BC8F8F">&quot;HelloWorld&quot;</FONT></B>
+it <B><FONT COLOR="#228B22">:: ()
+</a><a id='CMD00005' class='output'>' href='test-in-raw.html#CMD00005' target='in'
+</FONT></B>7
+it <B><FONT COLOR="#228B22">:: Num a =&gt; a
+</a><a id='CMD00006' class='output'>' href='test-in-raw.html#CMD00006' target='in'
+</FONT></B><B><FONT COLOR="#BC8F8F">&quot;aaa&lt;bbb&gt;ccc&quot;</FONT></B>
+it <B><FONT COLOR="#228B22">:: [Char]
+</a><a id='CMD00007' class='output'>' href='test-in-raw.html#CMD00007' target='in'
+</a><a id='CMD00008' class='output'>' href='test-in-raw.html#CMD00008' target='in'
+</FONT></B><B><FONT COLOR="#A020F0">data</FONT></B> GHCIMONRAW = GHCIMONRAW String
+</a><a id='CMD00009' class='output'>' href='test-in-raw.html#CMD00009' target='in'
+<img alt='picsum' src='https://picsum.photos/700/200'>
+it <B><FONT COLOR="#228B22">:: GHCIMONRAW
+</a><a id='CMD00010' class='output'>' href='test-in-raw.html#CMD00010' target='in'
+</a><a id='CMD00011' class='output'>' href='test-in-raw.html#CMD00011' target='in'
+</a><a id='CMD00012' class='output'>' href='test-in-raw.html#CMD00012' target='in'
+</a><a id='CMD00013' class='output'>' href='test-in-raw.html#CMD00013' target='in'
+</FONT></B>16
+it <B><FONT COLOR="#228B22">:: Num a =&gt; a
+</a><a id='CMD00014' class='output'>' href='test-in-raw.html#CMD00014' target='in'
+</a><a id='CMD00015' class='output'>' href='test-in-raw.html#CMD00015' target='in'
+</a><a id='CMD00016' class='output'>' href='test-in-raw.html#CMD00016' target='in'
+</a>
