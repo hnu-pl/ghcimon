@@ -26,10 +26,10 @@ addInTags (l:ls)
   | l=="<PRE>"   = inputStyle : l : addInTags ls
   | hasCMD l     =  case checkCMD l of
                        0   ->   "</a>":[]
-                       1   ->   concat ["<a href = 'test-out-raw.html" , (dropWhile (/= '#' )  $ head $ lines l) , " class='input' target='out'>"] :  addInTags ls
-                       _   ->   concat ["</a><a href = 'test-out-raw.html", (dropWhile (/= '#' )  $ head $ lines l) , " class='input' target='out'>"]: addInTags ls
+                       1   ->   atag :  addInTags ls
+                       _   ->  concat ["</a>" , atag ] : addInTags ls
   | otherwise  = l : addInTags ls
-
+      where  atag = concat ["<a href = 'test-out-raw.html",(dropWhile (/= '#' )  $ head $ lines l) ,", id='",(tail (dropWhile (/= '#' )  $ head $ lines l)),"' class='input' target='out'>"]
 
 
 
@@ -37,6 +37,7 @@ inputStyle = unlines
   [ "<style type='text/css'>"
   , "a.input { all: unset; }"
   , "a:focus.input { background-color: yellow; }"
+  , "input:target { background-color: #DDDDDD; }"
   , "</style>"
   ]
 
@@ -46,6 +47,8 @@ tagOutputHTML = unlines . addOutTags . lines
 
 outputStyle = unlines
   [ "<style type='text/css'>"
+  , "a.output { all: unset; }"
+  , "a:focus.output { background-color: yellow; }"
   , ".output:target { background-color: #DDDDDD; }"
   , "</style>"
   ]
@@ -54,12 +57,30 @@ addOutTags []     = []
 addOutTags (l:ls)
   | l=="<PRE>" = outputStyle : l : addOutTags ls
   | hasCMD l   =  case checkCMD l of
-                    0 -> "</div>":[]
-                    1 ->  concat ["<div id='CMD"       , (printf "%05d" (1 :: Int)) ,"' class='output'>"] : addOutTags ls
-                    n ->  concat ["</div><div id='CMD" , (printf "%05d" (n ::Int))  ,"' class='output'>"] : addOutTags ls
+                    0 -> "</a>":[]
+                    1 ->  concat 
+                        ["<a id='" ,
+                        cmd ,
+                        "' class='output'>",
+                        "' href='test-in-raw.html",
+                        "#", cmd ,
+                        "' target='in'"
+                        ] 
+                        : addOutTags ls
+                    n ->  concat 
+                        ["</a><a id='" ,
+                        cmd ,
+                        "' class='output'>",
+                        "' href='test-in-raw.html",
+                        "#", cmd ,
+                        "' target='in'"
+                        ]
+                        : addOutTags ls
   | hasRAW l   = decode (parseRAW l) : addOutTags ls
   | otherwise  = l : addOutTags ls
-
+      where cmd = concat ["CMD", (printf "%05d" (checkCMD l :: Int))]
+    
+    
 hasRAW :: String -> Bool
 hasRAW l = "</FONT></B>GHCIMONRAW <B>" `isPrefixOf` l
 
