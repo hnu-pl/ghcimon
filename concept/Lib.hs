@@ -70,10 +70,10 @@ addOutTags (l:ls)
                     n ->  concat 
                         ["</a><a id='" ,
                         cmd ,
-                        "' class='output'>",
+                        "' class='output'",
                         "' href='test-in-raw.html",
                         "#", cmd ,
-                        "' target='in'"
+                        "' target='in'>"
                         ]
                         : addOutTags ls
   | hasRAW l   = decode (parseRAW l) : addOutTags ls
