@@ -71,7 +71,7 @@ addOutTags (l:ls)
                         ["</a><a id='" ,
                         cmd ,
                         "' class='output'",
-                        "' href='test-in-raw.html",
+                        " href='test-in-raw.html",
                         "#", cmd ,
                         "' target='in'>"
                         ]
