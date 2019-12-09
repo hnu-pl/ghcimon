@@ -16,7 +16,7 @@ addcmds :: Bool -> Int -> [String] -> [String] -- :{ :}  체크용 Bool 추가 �
 addcmds b _ [] = [printf ":!echo '#CMD%05d'" (0::Int)] -- end with #CMD00000
 addcmds b n (l:ls) 
                  | b == False                       = if  ":}" `isInfixOf` l then addcmds True n ls else addcmds False n ls
-                 | b == True &&  ":{" `isInfixOf` l = addcmds False n ls 
+                 | b == True &&  ":{" `isInfixOf` l = printf ":!echo '#CMD%05d'" n : addcmds False (n+1) ls 
                  | all isSpace l && (not (null ls) && all isSpace (head ls)) 
                                                     = addcmds b n ls -- 태그 대량생성 방지
                  | all isSpace l                    = printf ":!echo '#CMD%05d'" n : addcmds b (n+1) ls
