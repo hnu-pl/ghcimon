@@ -12,7 +12,7 @@ inputFilter = unlines . addCMDs . ([]:) . lines
 
 addCMDs = addcmds 1
 
-addcmds :: Int -> [String] -> [String] -- :{ :}  체크용 Bool 추가
+addcmds :: Int -> [String] -> [String] -- :{ :}  체크용 Bool 추가 필요 (:{ :} 사이 공백 시 에러
 addcmds _ [] = [printf ":!echo '#CMD%05d'" (0::Int)] -- end with #CMD00000
 addcmds n (l:ls) 
                  | all isSpace l && (not (null ls) && all isSpace (head ls)) = addcmds n ls -- 태그 대량생성 방지
@@ -30,6 +30,7 @@ addInTags (l:ls)
                        0   ->   "</a></div>":[]
                        1   ->   atag :  addInTags ls
                        _   ->  concat ["</a></div>" , atag ] : addInTags ls
+ -- | has
   | otherwise  = l : addInTags ls
       where  atag = concat ["<div class='input' id='",(tail (dropWhile (/= '#' )  $ head $ lines l)) , "><a href = 'test-out-raw.html",(dropWhile (/= '#' )  $ head $ lines l) ,", class='input' target='out'>"]
 
@@ -76,14 +77,16 @@ addOutTags (l:ls)
 hasRAW :: String -> Bool
 hasRAW l = "</FONT></B>GHCIMONRAW <B>" `isPrefixOf` l
 
-parseRAW l = "<img alt='picsum' src='https://picsum.photos/700/200'>" -- TODO
+parseRAW l = decode $ takeWhile (/= '<') .  filterStr ">" $ filterStr "<FONT " l 
+--parseRAW l = "<img alt='picsum' src='https://picsum.photos/700/200'>" -- TODO
 
 hasCMD :: String -> Bool
 hasCMD l = "#CMD" `isInfixOf` l 
 
-checkCMD l = read $ filter isNumber (getCMD "#CMD" l) :: Int 
+checkCMD l = read $ filter isNumber (filterStr "#CMD" l) :: Int 
 
-getCMD :: String -> String -> String
-getCMD [] l =  l
-getCMD s  [] =  [] 
-getCMD s@(x:xs)  (y:ys) = if x==y then x:(getCMD xs ys) else getCMD s ys
+filterStr' :: String -> String -> String -> String
+filterStr' [] l _ =  l
+filterStr' s  [] _ =  [] 
+filterStr' s@(x:xs)  (y:ys) s2 = if x==y then filterStr' xs ys s2 else filterStr' s2 ys s2
+filterStr s s2 = filterStr' s s2 s
