@@ -77,8 +77,7 @@ addOutTags (l:ls)
 hasRAW :: String -> Bool
 hasRAW l = "</FONT></B>GHCIMONRAW <B>" `isPrefixOf` l
 
-parseRAW l = decode $ takeWhile (/= '<') .  filterStr ">" $ filterStr "<FONT " l 
---parseRAW l = "<img alt='picsum' src='https://picsum.photos/700/200'>" -- TODO
+parseRAW l = decode $ takeWhile (/= '<') .  filterStr ">" $ filterStr "<FONT " l  --"(&quot;) 에 대한 처리?
 
 hasCMD :: String -> Bool
 hasCMD l = "#CMD" `isInfixOf` l 
