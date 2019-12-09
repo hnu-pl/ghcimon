@@ -12,10 +12,12 @@ inputFilter = unlines . addCMDs . ([]:) . lines
 
 addCMDs = addcmds 1
 
-addcmds :: Int -> [String] -> [String]
-addcmds n (l:ls) | all isSpace l = printf ":!echo '#CMD%05d'" n : addcmds (n+1) ls
-                 | otherwise     = l : addcmds n ls
+addcmds :: Int -> [String] -> [String] -- :{ :}  체크용 Bool 추가
 addcmds _ [] = [printf ":!echo '#CMD%05d'" (0::Int)] -- end with #CMD00000
+addcmds n (l:ls) 
+                 | all isSpace l && (not (null ls) && all isSpace (head ls)) = addcmds n ls -- 태그 대량생성 방지
+                 | all isSpace l                   = printf ":!echo '#CMD%05d'" n : addcmds (n+1) ls
+                 | otherwise                       = l : addcmds n ls
 
 -- add anchor tag to input html
 tagInputHTML :: String -> String
@@ -58,10 +60,8 @@ addOutTags (l:ls)
   | l=="<PRE>" = outputStyle : l : addOutTags ls
   | hasCMD l   =  case checkCMD l of
                     0 -> "</a></div>":[]
-                    1 ->  atag
-                        : addOutTags ls
-                    n -> concat ["</a></div>" , atag] 
-                        : addOutTags ls
+                    1 -> atag : addOutTags ls
+                    n -> concat ["</a></div>" , atag] : addOutTags ls
   | hasRAW l   = decode (parseRAW l) : addOutTags ls
   | otherwise  = l : addOutTags ls
       where  atag = concat 
