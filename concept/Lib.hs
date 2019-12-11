@@ -54,7 +54,7 @@ tagOutputHTML = unlines . addOutTags . lines
 outputStyle = unlines
   [ "<style type='text/css'>"
   , "a.output { all: unset; }"
-  , "a:focus.output { background-color: yellow; }"
+  , "a:focus.output > div.output { background-color: yellow; }"
   , "div.output:target { background-color: #DDDDDD; }"
   , "</style>"
   ]
