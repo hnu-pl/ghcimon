@@ -63,17 +63,17 @@ addOutTags []     = []
 addOutTags (l:ls)
   | l=="<PRE>" = outputStyle : l : addOutTags ls
   | hasCMD l   =  case checkCMD l of
-                    0 -> "</a></div>":[]
+                    0 -> "</div></a>":[]
                     1 -> atag : addOutTags ls
-                    n -> concat ["</a></div>" , atag] : addOutTags ls
+                    n -> concat ["</div></a>" , atag] : addOutTags ls
   | hasRAW l   = decode (parseRAW l) : addOutTags ls
   | otherwise  = l : addOutTags ls
       where  atag = concat 
-                        ["<div id='CMD", 
-                        (printf "%05d" (checkCMD l :: Int)) ,
-                        "' class='output'><a href='test-in-raw.html",
+                        ["<a href='test-in-raw.html",
                         "#", "CMD", (printf "%05d" (checkCMD l :: Int)),
-                        "' class='output' target='in'>"
+                        "' class='output' target='in'><div id='CMD", 
+                        (printf "%05d" (checkCMD l :: Int)) ,
+                        "' class='output'>"
                         ]
     
     
