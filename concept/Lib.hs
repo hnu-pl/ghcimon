@@ -10,12 +10,17 @@ import Network.URI.Encode (encode, decode)
 inputFilter :: String -> String
 inputFilter = unlines . addCMDs . ([]:) . lines
 
-addCMDs = addcmds 1
+addCMDs = addcmds True 1
 
-addcmds :: Int -> [String] -> [String]
-addcmds n (l:ls) | all isSpace l = printf ":!echo '#CMD%05d'" n : addcmds (n+1) ls
-                 | otherwise     = l : addcmds n ls
-addcmds _ [] = [printf ":!echo '#CMD%05d'" (0::Int)] -- end with #CMD00000
+addcmds :: Bool -> Int -> [String] -> [String] -- :{ :}  체크용 Bool 추가 필요 (:{ :} 사이 공백 시 에러
+addcmds b _ [] = [printf ":!echo '#CMD%05d'" (0::Int)] -- end with #CMD00000
+addcmds b n (l:ls) 
+                 | b == False                       = if  ":}" `isInfixOf` l then l : addcmds True n ls else l : addcmds False n ls
+                 | b == True &&  ":{" `isInfixOf` l = printf ":!echo '#CMD%05d'" n : l : addcmds False (n+1) ls 
+                 | all isSpace l && (not (null ls) && all isSpace (head ls)) 
+                                                    = addcmds b n ls -- 태그 대량생성 방지
+                 | all isSpace l                    = printf ":!echo '#CMD%05d'" n : addcmds b (n+1) ls
+                 | otherwise                        = l : addcmds b n ls
 
 -- add anchor tag to input html
 tagInputHTML :: String -> String
@@ -25,11 +30,12 @@ addInTags []     = []
 addInTags (l:ls)
   | l=="<PRE>"   = inputStyle : l : addInTags ls
   | hasCMD l     =  case checkCMD l of
-                       0   ->   "</a>":[]
-                       1   ->   concat ["<a href = 'test-out-raw.html" , (dropWhile (/= '#' )  $ head $ lines l) , " class='input' target='out'>"] :  addInTags ls
-                       _   ->   concat ["</a><a href = 'test-out-raw.html", (dropWhile (/= '#' )  $ head $ lines l) , " class='input' target='out'>"]: addInTags ls
+                       0   ->   "</a></div>":[]
+                       1   ->   atag :  addInTags ls
+                       _   ->  concat ["</a></div>" , atag ] : addInTags ls
+ -- | has
   | otherwise  = l : addInTags ls
-
+      where  atag = concat ["<div class='input' id='",(tail (dropWhile (/= '#' )  $ head $ lines l)) , "><a href = 'test-out-raw.html",(dropWhile (/= '#' )  $ head $ lines l) ,", class='input' target='out'>"]
 
 
 
@@ -37,6 +43,7 @@ inputStyle = unlines
   [ "<style type='text/css'>"
   , "a.input { all: unset; }"
   , "a:focus.input { background-color: yellow; }"
+  , "div.input:target { background-color: #DDDDDD; }"
   , "</style>"
   ]
 
@@ -46,7 +53,9 @@ tagOutputHTML = unlines . addOutTags . lines
 
 outputStyle = unlines
   [ "<style type='text/css'>"
-  , ".output:target { background-color: #DDDDDD; }"
+  , "a.output { all: unset; }"
+  , "a:focus.output > div.output { background-color: yellow; }"
+  , "div.output:target { background-color: #DDDDDD; }"
   , "</style>"
   ]
 
@@ -54,23 +63,32 @@ addOutTags []     = []
 addOutTags (l:ls)
   | l=="<PRE>" = outputStyle : l : addOutTags ls
   | hasCMD l   =  case checkCMD l of
-                    0 -> "</div>":[]
-                    1 ->  concat ["<div id='CMD"       , (printf "%05d" (1 :: Int)) ,"' class='output'>"] : addOutTags ls
-                    n ->  concat ["</div><div id='CMD" , (printf "%05d" (n ::Int))  ,"' class='output'>"] : addOutTags ls
+                    0 -> "</div></a>":[]
+                    1 -> atag : addOutTags ls
+                    n -> concat ["</div></a>" , atag] : addOutTags ls
   | hasRAW l   = decode (parseRAW l) : addOutTags ls
   | otherwise  = l : addOutTags ls
-
+      where  atag = concat 
+                        ["<a href='test-in-raw.html",
+                        "#", "CMD", (printf "%05d" (checkCMD l :: Int)),
+                        "' class='output' target='in'><div id='CMD", 
+                        (printf "%05d" (checkCMD l :: Int)) ,
+                        "' class='output'>"
+                        ]
+    
+    
 hasRAW :: String -> Bool
 hasRAW l = "</FONT></B>GHCIMONRAW <B>" `isPrefixOf` l
 
-parseRAW l = "<img alt='picsum' src='https://picsum.photos/700/200'>" -- TODO
+parseRAW l = decode $ takeWhile (/= '<') .  filterStr ">" $ filterStr "<FONT " l  --"(&quot;) 에 대한 처리?
 
 hasCMD :: String -> Bool
 hasCMD l = "#CMD" `isInfixOf` l 
 
-checkCMD l = read $ filter isNumber (getCMD "#CMD" l) :: Int 
+checkCMD l = read $ filter isNumber (filterStr "#CMD" l) :: Int 
 
-getCMD :: String -> String -> String
-getCMD [] l =  l
-getCMD s  [] =  [] 
-getCMD s@(x:xs)  (y:ys) = if x==y then x:(getCMD xs ys) else getCMD s ys
+filterStr' :: String -> String -> String -> String
+filterStr' [] l _ =  l
+filterStr' s  [] _ =  [] 
+filterStr' s@(x:xs)  (y:ys) s2 = if x==y then filterStr' xs ys s2 else filterStr' s2 ys s2
+filterStr s s2 = filterStr' s s2 s
