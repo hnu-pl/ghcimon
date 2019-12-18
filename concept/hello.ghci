@@ -12,9 +12,9 @@ print $
 
 :}
 
-3 + 4
+3 + 4 +
 
-"aaa<bbb>ccc"
+"aaa<bbb>ccc<ddd>"
 
 :m + Network.URI.Encode
 
