@@ -56,6 +56,7 @@ outputStyle = unlines
   , "a.output { all: unset; }"
   , "a:focus.output > div.output { background-color: yellow; }"
   , "div.output:target { background-color: #DDDDDD; }"
+  , "div.end { height:100%; }"
   , "</style>"
   ]
 
@@ -63,7 +64,7 @@ addOutTags []     = []
 addOutTags (l:ls)
   | l=="<PRE>" = outputStyle : l : addOutTags ls
   | hasCMD l   =  case checkCMD l of
-                    0 -> "</div></a>":[]
+                    0 -> "</div></a><div class='end'></div>":ls
                     1 -> atag : addOutTags ls
                     n -> concat ["</div></a>" , atag] : addOutTags ls
   | hasRAW l   = decode (parseRAW l) : addOutTags ls
